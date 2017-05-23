@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+    <div class="row">
+        <h2>Блог: {{ blog.name }}</h2>
+        <h4>Автор: {{ blog.owner }}</h4>
+    </div>
+    <br>
+    {% if user == blog.owner %}
+        <div class="row">
+            <a class="btn btn-primary" href="{% url 'blogs:add_post' blog.slug %}">Добавить пост</a>
+        </div>
+        <br>
+    {% endif %}
+    {% for post in page_obj.object_list %}
+        <div class="row">
+            <hr>
+            <a href="{% url 'blogs:post' blog.slug post.pk %}" >{{ post.title|upper }}</a>
+            <p>Добавлен: {{ post.created_at }}</p>
+            {% if user == blog.owner %}
+                <p><a href="{% url 'blogs:update_post' blog.slug post.pk %}" >редактировать</a></p>
+            {% endif %}
+        </div>
+    {% endfor %}
+    <hr>
+    {% include 'includes/pagination.html' %}
+{% endblock content %}

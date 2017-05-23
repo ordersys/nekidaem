@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% load bootstrap3 %}
+
+{% block content %}
+    <div class="row">
+        <h2>{% if post %}Редактирование поста{% else %}Новый пост{% endif %}</h2>
+    </div>
+    <div class="row">
+        <form action="." method="post">
+            {% csrf_token %}
+            {% bootstrap_form form %}
+            <button class="btn btn-primary" type="submit">Сохранить</button>
+        </form>
+    </div>
+{% endblock content %}

@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+    <div class="row">
+        <h2>Все блоги</h2>
+    </div>
+    <br>
+    {% for blog in page_obj.object_list %}
+        <div class="row">
+            <a href="{% url 'blogs:blog' blog.slug %}" >{{ blog.name }}</a> | Автор: {{ blog.owner }}
+            {% if blog.has_subscription %}
+                <p><a href="{% url 'blogs:delete_subscription' blog.slug %}" class="btn btn-primary btn-sm">отписаться</a></p>
+            {% elif user.is_authenticated and blog.owner != user %}
+                <form action="{% url 'blogs:add_subscription' blog.slug %}" method="post">
+                    {% csrf_token %}
+                    <button class="btn btn-primary btn-sm" type="submit">подписаться</button>
+                </form>
+            {% endif %}
+            <hr>
+        </div>
+    {% endfor %}
+    {% include 'includes/pagination.html' %}
+{% endblock content %}
